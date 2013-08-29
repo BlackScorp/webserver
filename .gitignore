@@ -214,7 +214,8 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+
 projects/*
-vagrant/.*
-vagrant/~*
-!projects/example/*
+!projects/example/index.php
+vagrant/.vagrant/*
+
