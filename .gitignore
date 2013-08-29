@@ -216,6 +216,8 @@ pip-log.txt
 
 
 projects/*
+!projects/example
+projects/example/*
 !projects/example/index.php
 vagrant/.vagrant/*
 
