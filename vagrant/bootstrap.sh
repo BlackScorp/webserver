@@ -21,8 +21,8 @@
         echo "phpmyadmin phpmyadmin/database-type select mysql" | debconf-set-selections
 
         #install webserver
-        apt-get install -y subversion nodejs
-        apt-get install  -y mysql-server mysql-client
+        apt-get install -y subversion nodejs graphviz
+        apt-get install -y mysql-server mysql-client
         apt-get install -y php5 libapache2-mod-php5 php-apc php5-mysql php5-dev php-pear libcurl4-openssl-dev php5-xdebug php5-gd
         apt-get install -y apache2 phpmyadmin
 
@@ -31,17 +31,13 @@
         a2enmod expires
         a2enmod headers
 
-        #link files
-        ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
-        ln -s /vagrant/vhosts/ /etc/apache2/conf.d/.
-        ln -s /vagrant/custom.ini /etc/php5/conf.d/custom.ini
-        echo "<?php phpinfo(); " > /var/www/index.php
-        unlink /var/www/index.html
-
         usermod -a -G vagrant www-data
         #install pecl
+        pecl config-set preferred_state beta
+        pecl install xhprof
         pecl install pecl_http
         echo "extension=http.so" > /etc/php5/conf.d/http.ini
+        echo "extension=xhprof.so\nxhprof.output_dir=\"/tmp/xhprof\"" > /etc/php5/conf.d/xhprof.ini
         #install npm
         curl https://npmjs.org/install.sh | sudo sh
         npm install -g less
@@ -49,6 +45,13 @@
         curl -sS https://getcomposer.org/installer | php
         mv composer.phar /usr/local/bin/composer
         chmod a+x /usr/local/bin/composer
+        #link files
+        ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
+        ln -s /vagrant/vhosts/ /etc/apache2/conf.d/.
+        ln -s /vagrant/custom.ini /etc/php5/conf.d/custom.ini
+        ln -s /usr/share/php/xhprof_html /var/www/xhprof
+        echo "<?php phpinfo(); " > /var/www/index.php
+        unlink /var/www/index.html
         #set locale and timezone
         update-locale LANG=de_DE.UTF-8 LC_MESSAGES=POSIX
         echo "Europe/Berlin" | sudo tee /etc/timezone
