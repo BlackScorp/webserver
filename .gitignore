@@ -221,3 +221,4 @@ projects/example/*
 !projects/example/index.php
 vagrant/.vagrant/*
 
+vagrant/init
