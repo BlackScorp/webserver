@@ -33,13 +33,15 @@
 
         usermod -a -G vagrant www-data
         #install pecl
-        pecl config-set preferred_state beta
-        pecl install xhprof
+     
         pecl install pecl_http
         echo "extension=http.so" > /etc/php5/conf.d/http.ini
+        pecl config-set preferred_state beta
+        pecl install xhprof
         echo "extension=xhprof.so\nxhprof.output_dir=\"/tmp/xhprof\"" > /etc/php5/conf.d/xhprof.ini
+        pecl config-set preferred_state stable
         #install npm
-        curl https://npmjs.org/install.sh | sudo sh
+        curl https://npmjs.org/install.sh | sh
         npm install -g less
         #install composer
         curl -sS https://getcomposer.org/installer | php
