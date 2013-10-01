@@ -7,6 +7,8 @@
 
         add-apt-repository ppa:svn/ppa -y
         add-apt-repository ppa:chris-lea/node.js -y
+	add-apt-repository ppa:ondrej/php5 -y
+	add-apt-repository ppa:ondrej/apache2 -y
         apt-get -y update
 
         #set configs from bootstrap.cfg
@@ -23,7 +25,7 @@
         #install webserver
         apt-get install -y subversion nodejs graphviz
         apt-get install -y mysql-server mysql-client
-        apt-get install -y php5 libapache2-mod-php5 php-apc php5-mysql php5-dev php-pear libcurl4-openssl-dev php5-xdebug php5-gd
+        apt-get install -y php5 libapache2-mod-php5 php-apc php5-mysql php5-dev php-pear libcurl4-openssl-dev php5-xdebug php5-gd php5-sqlite
         apt-get install -y apache2 phpmyadmin
 
         #enable apache modules
