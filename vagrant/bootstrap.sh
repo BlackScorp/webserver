@@ -37,10 +37,8 @@
         #install pecl
      
         pecl install pecl_http
-        echo "extension=http.so" > /etc/php5/conf.d/http.ini
         pecl config-set preferred_state beta
         pecl install xhprof
-        echo "extension=xhprof.so\nxhprof.output_dir=\"/tmp/xhprof\"" > /etc/php5/conf.d/xhprof.ini
         pecl config-set preferred_state stable
         #install npm
         curl https://npmjs.org/install.sh | sh
@@ -50,16 +48,18 @@
         mv composer.phar /usr/local/bin/composer
         chmod a+x /usr/local/bin/composer
         #link files
-        ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf.d/phpmyadmin.conf
-        ln -s /vagrant/vhosts/ /etc/apache2/conf.d/.
-        ln -s /vagrant/custom.ini /etc/php5/conf.d/custom.ini
+        ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+        ln -s /vagrant/vhosts/ /etc/apache2/conf-available/.
+	a2enconf phpmyadmin
+	a2enconf example
+        ln -s /vagrant/ini/cli.ini /etc/php5/cli/conf.d/custom.ini
+	ln -s /vagrant/ini/apache2.ini /etc/php5/apache2/conf.d/custom.ini
         ln -s /usr/share/php/xhprof_html /var/www/xhprof
         echo "<?php phpinfo(); " > /var/www/index.php
         unlink /var/www/index.html
         #set locale and timezone
         update-locale LANG=de_DE.UTF-8 LC_MESSAGES=POSIX
-        echo "Europe/Berlin" | sudo tee /etc/timezone
-        sudo dpkg-reconfigure --frontend noninteractive tzdata
+        echo "Europe/Berlin" | tee /etc/timezone
         #create ini file
         touch /vagrant/init
     fi
