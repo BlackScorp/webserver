@@ -3,14 +3,14 @@
     if [ ! -f /vagrant/init ]; then
         export DEBIAN_FRONTEND=noninteractive
         #Install basic apps
-        apt-get -y install vim mc git build-essential curl python-software-properties zip unzip expect locate
+        apt-get -y install vim mc git build-essential curl python-software-properties zip unzip expect locate grub
 
         add-apt-repository ppa:svn/ppa -y
         add-apt-repository ppa:chris-lea/node.js -y
 	add-apt-repository ppa:ondrej/php5 -y
 	add-apt-repository ppa:ondrej/apache2 -y
         apt-get -y update
-
+	
         #set configs from bootstrap.cfg
         . /vagrant/bootstrap.cfg
         echo "mysql-server mysql-server/root_password password $mysql_password" | debconf-set-selections
@@ -21,7 +21,8 @@
         echo "phpmyadmin phpmyadmin/password-confirm password $mysql_password" | debconf-set-selections
         echo "phpmyadmin phpmyadmin/setup-password password $mysql_password" | debconf-set-selections
         echo "phpmyadmin phpmyadmin/database-type select mysql" | debconf-set-selections
-
+	echo "phpmyadmin phpmyadmin/database-type select mysql" | debconf-set-selections
+	
         #install webserver
         apt-get install -y subversion nodejs graphviz
         apt-get install -y mysql-server mysql-client
@@ -58,16 +59,12 @@
         echo "<?php phpinfo(); " > /var/www/index.php
         unlink /var/www/index.html
         #set locale and timezone
-        update-locale LANG=de_DE.UTF-8 LC_MESSAGES=POSIX
-        echo "Europe/Berlin" | tee /etc/timezone
+        update-locale LANG="$lang" LC_MESSAGES=POSIX
+        echo $timezone > /etc/timezone
         #create ini file
         touch /vagrant/init
     fi
     service apache2 restart
-
-    apt-get autoclean -y
+    apt-get upgrade -y
     apt-get autoremove -y
-  
-
-
-
+    apt-get autoclean -y
