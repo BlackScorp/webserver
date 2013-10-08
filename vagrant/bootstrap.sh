@@ -50,7 +50,7 @@
         chmod a+x /usr/local/bin/composer
         #link files
         ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
-        ln -s /vagrant/vhosts/ /etc/apache2/conf-available/.
+        ln -s /vagrant/vhosts/example.conf /etc/apache2/conf-available/example.conf
 	a2enconf phpmyadmin
 	a2enconf example
         ln -s /vagrant/ini/cli.ini /etc/php5/cli/conf.d/custom.ini
